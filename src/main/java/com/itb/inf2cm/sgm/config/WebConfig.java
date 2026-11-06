@@ -12,7 +12,7 @@ public class WebConfig implements WebMvcConfigurer {
 
         registry.addMapping("/**")
             .allowedOrigins(
-                "https://SEU-SITE.netlify.app"
+                "https://tuffvalley.netlify.app"
             )
             .allowedMethods(
                 "GET",

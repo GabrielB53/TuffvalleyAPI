@@ -22,7 +22,7 @@ public class Usuario {
 	private String senha;
 	private String nivelAcesso; // ADMIN ou USER
     @Lob
-    @Column(name = "foto", columnDefinition = "VARBINARY(MAX)")
+    @Column(name = "foto")
     private byte[] foto;
 
 	private LocalDateTime dataCadastro;

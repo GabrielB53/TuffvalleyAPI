@@ -7,9 +7,23 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-	public void addCorsMappings(CorsRegistry registry) {
-		registry.addMapping("/**")
-				.allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD", "TRACE", "CONNECT")
-				.allowCredentials(false).maxAge(3600);
-	}
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+
+        registry.addMapping("/**")
+            .allowedOrigins(
+                "https://SEU-SITE.netlify.app"
+            )
+            .allowedMethods(
+                "GET",
+                "POST",
+                "PUT",
+                "PATCH",
+                "DELETE",
+                "OPTIONS"
+            )
+            .allowedHeaders("*")
+            .allowCredentials(false)
+            .maxAge(3600);
+    }
 }

@@ -75,17 +75,18 @@ public class UsuarioService {
     // Cria conta com senha padrão criptografada com BCrypt
     @Transactional
     public Usuario create(Usuario usuario) {
+
         if (usuarioRepository.findByEmail(usuario.getEmail()) != null) {
             return null;
         }
+
+        System.out.println("Senha recebida: " + usuario.getSenha());
 
         if (usuario.getSenha() == null || usuario.getSenha().isBlank()) {
             throw new IllegalArgumentException("A senha é obrigatória.");
         }
 
-        String senhaCriptografada = passwordEncoder.encode(usuario.getSenha());
-
-        usuario.setSenha(senhaCriptografada);
+        usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
         usuario.setDataCadastro(LocalDateTime.now());
         usuario.setStatusUsuario("ATIVO");
 

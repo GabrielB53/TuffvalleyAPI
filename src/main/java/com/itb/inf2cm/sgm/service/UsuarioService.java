@@ -76,7 +76,11 @@ public class UsuarioService {
     @Transactional
     public Usuario create(Usuario usuario) {
         if (usuarioRepository.findByEmail(usuario.getEmail()) != null) {
-            return null; // email já cadastrado
+            return null;
+        }
+
+        if (usuario.getSenha() == null || usuario.getSenha().isBlank()) {
+            throw new IllegalArgumentException("A senha é obrigatória.");
         }
 
         String senhaCriptografada = passwordEncoder.encode(usuario.getSenha());

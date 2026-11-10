@@ -1,8 +1,8 @@
+
 package com.itb.inf2cm.sgm.service;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,7 +24,7 @@ public class UsuarioService {
     public UsuarioService(UsuarioRepository usuarioRepository) {
         super();
         this.usuarioRepository = usuarioRepository;
-        this.passwordEncoder = new BCryptPasswordEncoder(); // instanciar uma vez e reutilizar
+        this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
     private final String SENHA_PADRAO = "12345678";
@@ -37,11 +37,11 @@ public class UsuarioService {
     public List<Usuario> findAll() {
         return usuarioRepository.findAll();
     }
-    
+
     public List<Usuario> findAllByStatus(String status) {
         return usuarioRepository.findByStatusUsuario(status);
     }
-    
+
     public List<Usuario> findByNomeContainingIgnoreCase(String nome) {
         return usuarioRepository.findByNomeContainingIgnoreCase(nome);
     }
@@ -54,12 +54,10 @@ public class UsuarioService {
             String senhaArmazenada = usuario.getSenha();
 
             if (senhaArmazenada != null && senhaArmazenada.startsWith("$2a$")) {
-                // senha com hash BCrypt: compara usando encoder.matches()
                 if (passwordEncoder.matches(senha, senhaArmazenada)) {
                     return usuario;
                 }
             } else {
-                // Se senha não estiver criptografada (não recomendado)
                 if (senha.equals(senhaArmazenada)) {
                     return usuario;
                 }
@@ -72,18 +70,18 @@ public class UsuarioService {
         return usuarioRepository.findByEmail(email);
     }
 
-    // Cria conta com senha padrão criptografada com BCrypt
+    // Cria conta utilizando a senha definida pelo usuário no frontend
     @Transactional
     public Usuario create(Usuario usuario) {
         if (usuarioRepository.findByEmail(usuario.getEmail()) != null) {
-            return null; // email já cadastrado
+            return null;
         }
 
-        String senhaCriptografada = passwordEncoder.encode(SENHA_PADRAO);
+        String senhaCriptografada = passwordEncoder.encode(usuario.getSenha());
 
         usuario.setSenha(senhaCriptografada);
         usuario.setDataCadastro(LocalDateTime.now());
-        usuario.setStatusUsuario("TROCAR_SENHA");
+        usuario.setStatusUsuario("ATIVO");
 
         return usuarioRepository.save(usuario);
     }

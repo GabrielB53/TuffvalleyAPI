@@ -37,11 +37,11 @@ public class UsuarioService {
     public List<Usuario> findAll() {
         return usuarioRepository.findAll();
     }
-
+    
     public List<Usuario> findAllByStatus(String status) {
         return usuarioRepository.findByStatusUsuario(status);
     }
-
+    
     public List<Usuario> findByNomeContainingIgnoreCase(String nome) {
         return usuarioRepository.findByNomeContainingIgnoreCase(nome);
     }
@@ -75,18 +75,15 @@ public class UsuarioService {
     // Cria conta com senha padrão criptografada com BCrypt
     @Transactional
     public Usuario create(Usuario usuario) {
-
-        // Verifica se o e-mail já está cadastrado
         if (usuarioRepository.findByEmail(usuario.getEmail()) != null) {
-            return null;
+            return null; // email já cadastrado
         }
 
-        // Criptografa a senha informada pelo usuário
-        String senhaCriptografada = passwordEncoder.encode(usuario.getSenha());
+        String senhaCriptografada = passwordEncoder.encode(SENHA_PADRAO);
 
         usuario.setSenha(senhaCriptografada);
         usuario.setDataCadastro(LocalDateTime.now());
-        usuario.setStatusUsuario("ATIVO");
+        usuario.setStatusUsuario("TROCAR_SENHA");
 
         return usuarioRepository.save(usuario);
     }

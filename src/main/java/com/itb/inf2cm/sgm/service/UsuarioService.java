@@ -37,11 +37,11 @@ public class UsuarioService {
     public List<Usuario> findAll() {
         return usuarioRepository.findAll();
     }
-    
+
     public List<Usuario> findAllByStatus(String status) {
         return usuarioRepository.findByStatusUsuario(status);
     }
-    
+
     public List<Usuario> findByNomeContainingIgnoreCase(String nome) {
         return usuarioRepository.findByNomeContainingIgnoreCase(nome);
     }
@@ -79,7 +79,7 @@ public class UsuarioService {
             return null; // email já cadastrado
         }
 
-        String senhaCriptografada = passwordEncoder.encode(SENHA_PADRAO);
+        String senhaCriptografada = passwordEncoder.encode(usuario.getSenha());
 
         usuario.setSenha(senhaCriptografada);
         usuario.setDataCadastro(LocalDateTime.now());

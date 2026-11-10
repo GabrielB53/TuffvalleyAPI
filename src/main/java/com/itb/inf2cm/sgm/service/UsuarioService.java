@@ -76,17 +76,15 @@ public class UsuarioService {
     @Transactional
     public Usuario create(Usuario usuario) {
 
+        // Verifica se o e-mail já está cadastrado
         if (usuarioRepository.findByEmail(usuario.getEmail()) != null) {
             return null;
         }
 
-        System.out.println("Senha recebida: " + usuario.getSenha());
+        // Criptografa a senha informada pelo usuário
+        String senhaCriptografada = passwordEncoder.encode(usuario.getSenha());
 
-        if (usuario.getSenha() == null || usuario.getSenha().isBlank()) {
-            throw new IllegalArgumentException("A senha é obrigatória.");
-        }
-
-        usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
+        usuario.setSenha(senhaCriptografada);
         usuario.setDataCadastro(LocalDateTime.now());
         usuario.setStatusUsuario("ATIVO");
 

@@ -83,7 +83,7 @@ public class UsuarioService {
 
         usuario.setSenha(senhaCriptografada);
         usuario.setDataCadastro(LocalDateTime.now());
-        usuario.setStatusUsuario("TROCAR_SENHA");
+        usuario.setStatusUsuario("ATIVO");
 
         return usuarioRepository.save(usuario);
     }
